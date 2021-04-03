@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Nova\Flexible\Resolvers;
+namespace App\Nova\Blocks\Resolvers;
 
-use Whitecube\NovaFlexibleContent\Value\ResolverInterface;
+use Kraenkvisuell\NovaCmsBlocks\Value\ResolverInterface;
 
 class :classname implements ResolverInterface
 {
@@ -11,7 +11,7 @@ class :classname implements ResolverInterface
      *
      * @param  mixed  $resource
      * @param  string $attribute
-     * @param  Whitecube\NovaFlexibleContent\Layouts\Collection $layouts
+     * @param  Kraenkvisuell\NovaCmsBlocks\Layouts\Collection $layouts
      * @return Illuminate\Support\Collection
      */
     public function get($resource, $attribute, $layouts)

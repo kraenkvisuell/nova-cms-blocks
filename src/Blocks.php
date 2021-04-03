@@ -1,31 +1,31 @@
 <?php
 
-namespace Whitecube\NovaFlexibleContent;
+namespace Kraenkvisuell\NovaCmsBlocks;
 
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Whitecube\NovaFlexibleContent\Http\ScopedRequest;
-use Whitecube\NovaFlexibleContent\Value\Resolver;
-use Whitecube\NovaFlexibleContent\Value\ResolverInterface;
-use Whitecube\NovaFlexibleContent\Layouts\Preset;
-use Whitecube\NovaFlexibleContent\Layouts\Layout;
-use Whitecube\NovaFlexibleContent\Layouts\LayoutInterface;
-use Whitecube\NovaFlexibleContent\Layouts\Collection as LayoutsCollection;
+use Kraenkvisuell\NovaCmsBlocks\Http\ScopedRequest;
+use Kraenkvisuell\NovaCmsBlocks\Value\Resolver;
+use Kraenkvisuell\NovaCmsBlocks\Value\ResolverInterface;
+use Kraenkvisuell\NovaCmsBlocks\Layouts\Preset;
+use Kraenkvisuell\NovaCmsBlocks\Layouts\Layout;
+use Kraenkvisuell\NovaCmsBlocks\Layouts\LayoutInterface;
+use Kraenkvisuell\NovaCmsBlocks\Layouts\Collection as LayoutsCollection;
 
-class Flexible extends Field
+class Blocks extends Field
 {
     /**
      * The field's component.
      *
      * @var string
      */
-    public $component = 'nova-flexible-content';
+    public $component = 'nova-cms-blocks';
 
     /**
      * The available layouts collection
      *
-     * @var Whitecube\NovaFlexibleContent\Layouts\Collection
+     * @var Kraenkvisuell\NovaCmsBlocks\Layouts\Collection
      */
     protected $layouts;
 
@@ -39,7 +39,7 @@ class Flexible extends Field
     /**
      * The field's value setter & getter
      *
-     * @var Whitecube\NovaFlexibleContent\Value\ResolverInterface
+     * @var Kraenkvisuell\NovaCmsBlocks\Value\ResolverInterface
      */
     protected $resolver;
 
@@ -231,7 +231,7 @@ class Flexible extends Field
     /**
      * Push a layout instance into the layouts collection
      *
-     * @param Whitecube\NovaFlexibleContent\Layouts\LayoutInterface $layout
+     * @param Kraenkvisuell\NovaCmsBlocks\Layouts\LayoutInterface $layout
      * @return void
      */
     protected function registerLayout(LayoutInterface $layout)
@@ -406,7 +406,7 @@ class Flexible extends Field
         }
 
         if (!is_array($value)) {
-            throw new \Exception("Unable to parse incoming Flexible content, data should be an array.");
+            throw new \Exception("Unable to parse incoming Blocks content, data should be an array.");
         }
 
         return $value;
@@ -460,7 +460,7 @@ class Flexible extends Field
      * Find an existing group based on its key
      *
      * @param  string $key
-     * @return \Whitecube\NovaFlexibleContent\Layouts\Layout
+     * @return \Kraenkvisuell\NovaCmsBlocks\Layouts\Layout
      */
     protected function findGroup($key)
     {
@@ -474,7 +474,7 @@ class Flexible extends Field
      *
      * @param  string $layout
      * @param  string $key
-     * @return \Whitecube\NovaFlexibleContent\Layouts\Layout
+     * @return \Kraenkvisuell\NovaCmsBlocks\Layouts\Layout
      */
     protected function newGroup($layout, $key)
     {
@@ -508,7 +508,7 @@ class Flexible extends Field
     {
         return array_merge_recursive(
             parent::getCreationRules($request),
-            $this->getFlexibleRules($request, 'creation')
+            $this->getBlocksRules($request, 'creation')
         );
     }
 
@@ -522,7 +522,7 @@ class Flexible extends Field
     {
         return array_merge_recursive(
             parent::getUpdateRules($request),
-            $this->getFlexibleRules($request, 'update')
+            $this->getBlocksRules($request, 'update')
         );
     }
 
@@ -533,7 +533,7 @@ class Flexible extends Field
      * @param  string $specificty
      * @return array
      */
-    protected function getFlexibleRules(NovaRequest $request, $specificty)
+    protected function getBlocksRules(NovaRequest $request, $specificty)
     {
         if (!($value = $this->extractValue($request, $this->attribute))) {
             return [];
@@ -546,7 +546,7 @@ class Flexible extends Field
             // assuming the field is located at the root of
             // the model's attributes. Therefore, we should now
             // register all the collected validation rules for later
-            // reference (see Http\TransformsFlexibleErrors).
+            // reference (see Http\TransformsBlocksErrors).
             static::registerValidationKeys($rules);
 
             // Then, transform the rules into an array that's actually
@@ -582,7 +582,7 @@ class Flexible extends Field
     }
 
     /**
-     * Transform Flexible rules array into an actual validator rules array
+     * Transform Blocks rules array into an actual validator rules array
      *
      * @param  array $rules
      * @return array
@@ -617,7 +617,7 @@ class Flexible extends Field
      * Return a previously registered validation key
      *
      * @param  string $key
-     * @return null|\Whitecube\NovaFlexibleContent\Http\FlexibleAttribute
+     * @return null|\Kraenkvisuell\NovaCmsBlocks\Http\BlocksAttribute
      */
     public static function getValidationKey($key)
     {
@@ -634,7 +634,7 @@ class Flexible extends Field
     {
         if (is_a($model, \Laravel\Nova\Resource::class)) {
             $model = $model->model();
-        } elseif (is_a($model, \Whitecube\NovaPage\Pages\Template::class)) {
+        } elseif (is_a($model, \Kraenkvisuell\NovaPage\Pages\Template::class)) {
             $model = $model->getOriginal();
         }
 

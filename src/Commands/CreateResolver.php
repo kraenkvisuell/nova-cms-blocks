@@ -1,6 +1,6 @@
 <?php
 
-namespace Whitecube\NovaFlexibleContent\Commands;
+namespace Kraenkvisuell\NovaCmsBlocks\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
@@ -26,7 +26,7 @@ class CreateResolver extends Command
      *
      * @var string
      */
-    protected $description = 'Generate a new Flexible Content Field Resolver';
+    protected $description = 'Generate a new Blocks Content Field Resolver';
 
     /**
      * The layout's classname
@@ -84,7 +84,7 @@ class CreateResolver extends Command
     protected function getPath()
     {
         return $this->makeDirectory(
-            app_path('Nova/Flexible/Resolvers/' . $this->classname . '.php')
+            app_path('Nova/Blocks/Resolvers/' . $this->classname . '.php')
         );
     }
 

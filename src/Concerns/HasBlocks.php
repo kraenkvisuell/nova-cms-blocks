@@ -1,21 +1,21 @@
 <?php
 
-namespace Whitecube\NovaFlexibleContent\Concerns;
+namespace Kraenkvisuell\NovaCmsBlocks\Concerns;
 
-use Whitecube\NovaFlexibleContent\Layouts\Layout;
-use Whitecube\NovaFlexibleContent\Layouts\Collection;
+use Kraenkvisuell\NovaCmsBlocks\Layouts\Layout;
+use Kraenkvisuell\NovaCmsBlocks\Layouts\Collection;
 use Illuminate\Support\Collection as BaseCollection;
 use Laravel\Nova\NovaServiceProvider;
-use Whitecube\NovaFlexibleContent\Value\FlexibleCast;
+use Kraenkvisuell\NovaCmsBlocks\Value\BlocksCast;
 
-trait HasFlexible {
+trait HasBlocks {
 
     /**
-     * Parse a Flexible Content attribute
+     * Parse a Blocks Content attribute
      *
      * @param string $attribute
      * @param array  $layoutMapping
-     * @return \Whitecube\NovaFlexibleContent\Layouts\Collection
+     * @return \Kraenkvisuell\NovaCmsBlocks\Layouts\Collection
      */
     public function flexible($attribute, $layoutMapping = [])
     {
@@ -25,11 +25,11 @@ trait HasFlexible {
     }
 
     /**
-     * Cast a Flexible Content value
+     * Cast a Blocks Content value
      *
      * @param array $value
      * @param array $layoutMapping
-     * @return \Whitecube\NovaFlexibleContent\Layouts\Collection
+     * @return \Kraenkvisuell\NovaCmsBlocks\Layouts\Collection
      */
     public function cast($value, $layoutMapping = [])
     {
@@ -37,26 +37,26 @@ trait HasFlexible {
             return $value;
         }
 
-        return $this->toFlexible($value ?: null, $layoutMapping);
+        return $this->toBlocks($value ?: null, $layoutMapping);
     }
 
     /**
-     * Parse a Flexible Content from value
+     * Parse a Blocks Content from value
      *
      * @param mixed $value
      * @param array $layoutMapping
-     * @return \Whitecube\NovaFlexibleContent\Layouts\Collection
+     * @return \Kraenkvisuell\NovaCmsBlocks\Layouts\Collection
      */
-    public function toFlexible($value, $layoutMapping = [])
+    public function toBlocks($value, $layoutMapping = [])
     {
-        $flexible = $this->getFlexibleArrayFromValue($value);
+        $flexible = $this->getBlocksArrayFromValue($value);
 
         if(is_null($flexible)) {
             return new Collection();
         }
 
         return new Collection(
-            array_filter($this->getMappedFlexibleLayouts($flexible, $layoutMapping))
+            array_filter($this->getMappedBlocksLayouts($flexible, $layoutMapping))
         );
     }
 
@@ -66,7 +66,7 @@ trait HasFlexible {
      * @param mixed $value
      * @return array|null
      */
-    protected function getFlexibleArrayFromValue($value)
+    protected function getBlocksArrayFromValue($value)
     {
         if(is_string($value)) {
             $value = json_decode($value);
@@ -85,13 +85,13 @@ trait HasFlexible {
     }
 
     /**
-     * Map array with Flexible Content Layouts
+     * Map array with Blocks Content Layouts
      *
      * @param array $flexible
      * @param array $layoutMapping
      * @return array
      */
-    protected function getMappedFlexibleLayouts(array $flexible, array $layoutMapping)
+    protected function getMappedBlocksLayouts(array $flexible, array $layoutMapping)
     {
         return array_map(function($item) use ($layoutMapping) {
             return $this->getMappedLayout($item, $layoutMapping);
@@ -103,7 +103,7 @@ trait HasFlexible {
      *
      * @param mixed $item
      * @param array $layoutMapping
-     * @return null|Whitecube\NovaFlexibleContent\Layouts\LayoutInterface
+     * @return null|Kraenkvisuell\NovaCmsBlocks\Layouts\LayoutInterface
      */
     protected function getMappedLayout($item, array $layoutMapping)
     {
@@ -145,7 +145,7 @@ trait HasFlexible {
      * @param string $key
      * @param array  $attributes
      * @param array  $layoutMapping
-     * @return \Whitecube\NovaFlexibleContent\Layouts\LayoutInterface
+     * @return \Kraenkvisuell\NovaCmsBlocks\Layouts\LayoutInterface
      */
     protected function createMappedLayout($name, $key, $attributes, array $layoutMapping)
     {
@@ -155,7 +155,7 @@ trait HasFlexible {
 
         $layout = new $classname($name, $name, [], $key, $attributes);
 
-        $model = is_a($this, FlexibleCast::class)
+        $model = is_a($this, BlocksCast::class)
             ? $this->model
             : $this;
 

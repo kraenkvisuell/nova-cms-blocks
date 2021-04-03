@@ -1,17 +1,17 @@
-# ![Laravel Nova Flexible Content](https://github.com/whitecube/nova-flexible-content/raw/master/title.png)
+# ![Laravel Nova Blocks Content](https://github.com/kraenkvisuell/nova-cms-blocks/raw/master/title.png)
 
-An easy & complete Flexible Field for Laravel Nova, perfect for repeated and flexible field groups.
+An easy & complete Blocks Field for Laravel Nova, perfect for repeated and flexible field groups.
 
-![Laravel Nova Flexible Content in action](https://github.com/whitecube/nova-flexible-content/raw/master/presentation.gif)
+![Laravel Nova Blocks Content in action](https://github.com/kraenkvisuell/nova-cms-blocks/raw/master/presentation.gif)
 
 ## Quick start
 
-The Flexible field can be used in various ways and for different purposes, but in most cases you'll only need a few of its capabilities. Here's how to get started really quickly.
+The Blocks field can be used in various ways and for different purposes, but in most cases you'll only need a few of its capabilities. Here's how to get started really quickly.
 
 ### Install
 
 ```
-composer require whitecube/nova-flexible-content
+composer require kraenkvisuell/nova-cms-blocks
 ```
 
 ### Usage
@@ -20,9 +20,9 @@ A flexible field allows easy management of repeatable and orderable groups of fi
 
 #### Adding layouts
 
-A layout represents a group of fields that can be repeated inside the Flexible field. You can add as many different layouts as you wish. If only one layout is defined the field will behave like a simple Repeater and by adding more layouts you'll obtain a Flexible Content. Both concepts are similar to [their cousins in Wordpress' ACF Plugin](https://www.advancedcustomfields.com/add-ons/).
+A layout represents a group of fields that can be repeated inside the Blocks field. You can add as many different layouts as you wish. If only one layout is defined the field will behave like a simple Repeater and by adding more layouts you'll obtain a Blocks Content. Both concepts are similar to [their cousins in Wordpress' ACF Plugin](https://www.advancedcustomfields.com/add-ons/).
 
-Layouts can be added using the following method on your Flexible fields:
+Layouts can be added using the following method on your Blocks fields:
 ```php
  addLayout(string $title, string $name, array $fields)
  ```
@@ -30,7 +30,7 @@ Layouts can be added using the following method on your Flexible fields:
 The `$name` parameter is used to store the chosen layout in the field's value. Choose it wisely, you'll probably use it to identify the layouts in your application.
 
 ```php
-use Whitecube\NovaFlexibleContent\Flexible;
+use Kraenkvisuell\NovaCmsBlocks\Blocks;
 
 /**
  * Get the fields displayed by the resource.
@@ -43,7 +43,7 @@ public function fields(Request $request)
     return [
         // ...
 
-        Flexible::make('Content')
+        Blocks::make('Content')
             ->addLayout('Simple content section', 'wysiwyg', [
                 Text::make('Title'),
                 Markdown::make('Content')
@@ -57,25 +57,25 @@ public function fields(Request $request)
     ];
 }
 ```
-![Example of Flexible layouts](https://github.com/whitecube/nova-flexible-content/raw/master/example_layouts.png)
+![Example of Blocks layouts](https://github.com/kraenkvisuell/nova-cms-blocks/raw/master/example_layouts.png)
 
 #### Customizing the button label
 
 You can change the default "Add layout" button's text like so:
 
 ```php
-Flexible::make('Content')
+Blocks::make('Content')
     ->button('Add something amazing!');
 ```
 
-![Add something amazing](https://github.com/whitecube/nova-flexible-content/raw/master/add_something_amazing.png)
+![Add something amazing](https://github.com/kraenkvisuell/nova-cms-blocks/raw/master/add_something_amazing.png)
 
 #### Making the field full width
 
 You can make the flexible field full width, taking up all available space on the form, and moving the label above the field by doing the following:
 
 ```php
-Flexible::make('Content')
+Blocks::make('Content')
     ->fullWidth()
 ```
 
@@ -84,7 +84,7 @@ Flexible::make('Content')
 You can limit how many times the "Add Layout" button will appear by doing the following:
 
 ```php
-Flexible::make('Content')->limit(2);
+Blocks::make('Content')->limit(2);
 ```
 
 You can specify any integer, or no integer at all; in that case it will default to 1.
@@ -94,13 +94,13 @@ You can specify any integer, or no integer at all; in that case it will default 
 You can choose to display a confirmation prompt before a layout is deleted by doing:
 
 ```php
-Flexible::make('Content')->confirmRemove();
+Blocks::make('Content')->confirmRemove();
 
 // You can override the text as well
-Flexible::make('Content')->confirmRemove($label = '', $yes = 'Delete', $no = 'Cancel');
+Blocks::make('Content')->confirmRemove($label = '', $yes = 'Delete', $no = 'Cancel');
 ```
 
-![Add something amazing](https://github.com/whitecube/nova-flexible-content/raw/master/confirm_remove.png)
+![Add something amazing](https://github.com/kraenkvisuell/nova-cms-blocks/raw/master/confirm_remove.png)
 
 #### Layout selection menu
 
@@ -108,13 +108,13 @@ You can customize the way your user selects a layout, you can choose between 'fl
 
 ```php
 // Default, simple list of all layouts
-Flexible::make('Content')->menu('flexible-drop-menu');
+Blocks::make('Content')->menu('flexible-drop-menu');
 
 // searchable select field
-Flexible::make('Content')->menu('flexible-search-menu');
+Blocks::make('Content')->menu('flexible-search-menu');
 
 // customized searchable select field
-Flexible::make('Content')
+Blocks::make('Content')
     ->menu(
         'flexible-search-menu',
         [
@@ -131,42 +131,42 @@ All you're doing here is defining which Vue component needs to be used.
 
 You can take `resources/js/components/OriginalDropMenu.vue` or `resources/js/components/SearchMenu.vue` as a starting point.
 
-## Using Flexible values in views
+## Using Blocks values in views
 
 The field stores its values as a single JSON string, meaning this string needs to be parsed before it can be used in your application.
 
 ### With casts
 
-This can be done trivially by using the `FlexibleCast` class in this package:
+This can be done trivially by using the `BlocksCast` class in this package:
 
 ```php
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Whitecube\NovaFlexibleContent\Value\FlexibleCast;
+use Kraenkvisuell\NovaCmsBlocks\Value\BlocksCast;
 
 class MyModel extends Model
 {
     protected $casts = [
-        'flexible-content' => FlexibleCast::class
+        'flexible-content' => BlocksCast::class
     ];
 }
 ```
 
 #### Writing a custom flexible cast
 
-By default, the `FlexibleCast` class will collect basic `Layout` instances. If you want to map the layouts into [Custom Layout instances](https://github.com/whitecube/nova-flexible-content#custom-layout-classes), it is also possible. First, create a custom flexible cast by running `php artisan flexible:cast MyFlexibleCast`. This will create the file in the `App\Casts` directory.
+By default, the `BlocksCast` class will collect basic `Layout` instances. If you want to map the layouts into [Custom Layout instances](https://github.com/kraenkvisuell/nova-cms-blocks#custom-layout-classes), it is also possible. First, create a custom flexible cast by running `php artisan flexible:cast MyBlocksCast`. This will create the file in the `App\Casts` directory.
 
 Then easily map your custom layout classes to the proper keys:
 
 ```php
 namespace App\Casts;
 
-class MyFlexibleCast extends FlexibleCast
+class MyBlocksCast extends BlocksCast
 {
     protected $layouts = [
-        'wysiwyg' => \App\Nova\Flexible\Layouts\WysiwygLayout::class,
-        'video' => \App\Nova\Flexible\Layouts\VideoLayout::class,
+        'wysiwyg' => \App\Nova\Blocks\Layouts\WysiwygLayout::class,
+        'video' => \App\Nova\Blocks\Layouts\VideoLayout::class,
     ];
 }
 ```
@@ -178,7 +178,7 @@ If you need to do complex things with your mappings instead of having a static a
 ```php
 namespace App\Casts;
 
-class MyFlexibleCast extends FlexibleCast
+class MyBlocksCast extends BlocksCast
 {
     protected function getLayoutMappings()
     {
@@ -191,35 +191,35 @@ class MyFlexibleCast extends FlexibleCast
 }
 ```
 
-### With the `HasFlexible` trait
+### With the `HasBlocks` trait
 
-By implementing the `HasFlexible` trait on your models, you can call the `flexible($attribute)` method, which will automatically transform the attribute's value into a fully parsed `Whitecube\NovaFlexibleContent\Layouts\Collection`. Feel free to apply this `flexible()` call directly in your blade views or to extract it into an attribute's mutator method as shown below:
+By implementing the `HasBlocks` trait on your models, you can call the `flexible($attribute)` method, which will automatically transform the attribute's value into a fully parsed `Kraenkvisuell\NovaCmsBlocks\Layouts\Collection`. Feel free to apply this `flexible()` call directly in your blade views or to extract it into an attribute's mutator method as shown below:
 
 ```php
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Whitecube\NovaFlexibleContent\Concerns\HasFlexible;
+use Kraenkvisuell\NovaCmsBlocks\Concerns\HasBlocks;
 
 class MyModel extends Model
 {
-    use HasFlexible;
+    use HasBlocks;
 
-    public function getFlexibleContentAttribute()
+    public function getBlocksContentAttribute()
     {
         return $this->flexible('flexible-content');
     }
 }
 ```
 
-By default, the `HasFlexible` trait will collect basic `Layout` instances. If you want to map the layouts into [Custom Layout instances](https://github.com/whitecube/nova-flexible-content#custom-layout-classes), it is also possible to specify the mapping rules as follows:
+By default, the `HasBlocks` trait will collect basic `Layout` instances. If you want to map the layouts into [Custom Layout instances](https://github.com/kraenkvisuell/nova-cms-blocks#custom-layout-classes), it is also possible to specify the mapping rules as follows:
 
 ```php
-public function getFlexibleContentAttribute()
+public function getBlocksContentAttribute()
 {
     return $this->flexible('flexible-content', [
-        'wysiwyg' => \App\Nova\Flexible\Layouts\WysiwygLayout::class,
-        'video' => \App\Nova\Flexible\Layouts\VideoLayout::class,
+        'wysiwyg' => \App\Nova\Blocks\Layouts\WysiwygLayout::class,
+        'video' => \App\Nova\Blocks\Layouts\VideoLayout::class,
     ]);
 }
 ```
@@ -228,13 +228,13 @@ public function getFlexibleContentAttribute()
 
 ### The Layouts Collection
 
-Collections returned by `FlexibleCast` or the `HasFlexible` trait extend the original `Illuminate\Support\Collection`. These custom layout collections expose a `find(string $name)` method which returns the first layout having the given layout `$name`.
+Collections returned by `BlocksCast` or the `HasBlocks` trait extend the original `Illuminate\Support\Collection`. These custom layout collections expose a `find(string $name)` method which returns the first layout having the given layout `$name`.
 
 ### The Layout instance
 
 Layouts are some kind of _fake models_. They use Laravel's `HasAttributes` trait, which means you can define accessors & mutators for the layout's attributes.
 
-Each Layout (or custom layout extending the base Layout) already implements the `HasFlexible` trait, meaning you can directly use the `$layout->flexible('my-sub-layout')` method to parse nested flexible content values.
+Each Layout (or custom layout extending the base Layout) already implements the `HasBlocks` trait, meaning you can directly use the `$layout->flexible('my-sub-layout')` method to parse nested flexible content values.
 
 Furthermore, it's also possible to access the Layout's properties using the following methods:
 
@@ -253,18 +253,18 @@ Returns the layout's unique key (the layout's unique identifier).
 
 ## Going further
 
-When using the Flexible Content field, you'll quickly come across of some use cases where the basics described above are not enough. That's why we developed the package in an extendable way, making it possible to easily add custom behaviors and/or capabilities to Field and its output.
+When using the Blocks Content field, you'll quickly come across of some use cases where the basics described above are not enough. That's why we developed the package in an extendable way, making it possible to easily add custom behaviors and/or capabilities to Field and its output.
 
 ## Custom Layout Classes
 
-Sometimes, `addLayout` definitions can get quite long, or maybe you want them to be  shared with other `Flexible` fields. The answer to this is to extract your Layout into its own class.
+Sometimes, `addLayout` definitions can get quite long, or maybe you want them to be  shared with other `Blocks` fields. The answer to this is to extract your Layout into its own class.
 
 ```php
-namespace App\Nova\Flexible\Layouts;
+namespace App\Nova\Blocks\Layouts;
 
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Markdown;
-use Whitecube\NovaFlexibleContent\Layouts\Layout;
+use Kraenkvisuell\NovaCmsBlocks\Layouts\Layout;
 
 class SimpleWysiwygLayout extends Layout
 {
@@ -300,8 +300,8 @@ class SimpleWysiwygLayout extends Layout
 You can then refer to this class as first and single parameter of the `addLayout(string $classname)` method:
 
 ```php
-Flexible::make('Content')
-    ->addLayout(\App\Nova\Flexible\Layouts\SimpleWysiwygLayout::class);
+Blocks::make('Content')
+    ->addLayout(\App\Nova\Blocks\Layouts\SimpleWysiwygLayout::class);
 ```
 
 
@@ -315,14 +315,14 @@ php artisan flexible:layout {classname?} {name?}
 
 ## Predefined Preset Classes
 
-In addition to reusable Layout classes, you can go a step further and create `Preset` classes for your Flexible fields. These allow you to reuse your whole Flexible field anywhere you want. They also make it easier to make your Flexible fields dynamic, for example if you want to add Layouts conditionally. And last but not least, they also have the added benefit of cleaning up your Nova Resource classes, if your Flexible field has a lot of `addLayout` definitions.
+In addition to reusable Layout classes, you can go a step further and create `Preset` classes for your Blocks fields. These allow you to reuse your whole Blocks field anywhere you want. They also make it easier to make your Blocks fields dynamic, for example if you want to add Layouts conditionally. And last but not least, they also have the added benefit of cleaning up your Nova Resource classes, if your Blocks field has a lot of `addLayout` definitions.
 
 ```php
-namespace App\Nova\Flexible\Presets;
+namespace App\Nova\Blocks\Presets;
 
 use App\PageBlocks;
-use Whitecube\NovaFlexibleContent\Flexible;
-use Whitecube\NovaFlexibleContent\Layouts\Preset;
+use Kraenkvisuell\NovaCmsBlocks\Blocks;
+use Kraenkvisuell\NovaCmsBlocks\Layouts\Preset;
 
 class WysiwygPagePreset extends Preset
 {
@@ -349,10 +349,10 @@ class WysiwygPagePreset extends Preset
      *
      * @return void
      */
-    public function handle(Flexible $field)
+    public function handle(Blocks $field)
     {
         $field->button('Add new block');
-        $field->resolver(\App\Nova\Flexible\Resolvers\WysiwygPageResolver::class);
+        $field->resolver(\App\Nova\Blocks\Resolvers\WysiwygPageResolver::class);
         $field->help('Go to the "<strong>Page blocks</strong>" Resource in order to add new WYSIWYG block types.');
 
         $this->blocks->each(function($block) use ($field) {
@@ -364,10 +364,10 @@ class WysiwygPagePreset extends Preset
 
 Please note that Preset classes are resolved using Laravel's Container, meaning you can type-hint any useful dependency in the Preset's `__construct()` method.
 
-Once the Preset is defined, just reference its classname in your Flexible field using the `preset` method:
+Once the Preset is defined, just reference its classname in your Blocks field using the `preset` method:
 ```php
-Flexible::make('Content')
-    ->preset(\App\Nova\Flexible\Presets\WysiwygPagePreset::class);
+Blocks::make('Content')
+    ->preset(\App\Nova\Blocks\Presets\WysiwygPagePreset::class);
 ```
 
 You can create these Preset classes easily with the following artisan command:
@@ -380,7 +380,7 @@ php artisan flexible:preset {classname?}
 
 ## Custom Resolver Classes
 
-By default, the field takes advantage of a **JSON column** on your model's table. In some cases, a JSON attribute is just not the way to go. For example, you could want to store the values in another table (meaning you'll be using the Flexible Content field instead of a traditional BelongsToMany or HasMany field). No worries, we've got you covered!
+By default, the field takes advantage of a **JSON column** on your model's table. In some cases, a JSON attribute is just not the way to go. For example, you could want to store the values in another table (meaning you'll be using the Blocks Content field instead of a traditional BelongsToMany or HasMany field). No worries, we've got you covered!
 
 First, create the new Resolver class. For convenience, this can be achieved using the following artisan command:
 ```
@@ -389,7 +389,7 @@ php artisan flexible:resolver {classname?}
 // Ex: php artisan flexible:resolver WysiwygPageResolver
 ```
 
-It will place the new Resolver class in your project's `app/Nova/Flexible/Resolvers` directory. Each Resolver should implement the `Whitecube\NovaFlexibleContent\Value\ResolverInterface` contract and therefore feature at least two methods: `set` and `get`.
+It will place the new Resolver class in your project's `app/Nova/Blocks/Resolvers` directory. Each Resolver should implement the `Kraenkvisuell\NovaCmsBlocks\Value\ResolverInterface` contract and therefore feature at least two methods: `set` and `get`.
 
 ### Resolving the field
 
@@ -401,7 +401,7 @@ The `get` method is used to resolve the field's content. It is responsible to re
  *
  * @param  mixed  $resource
  * @param  string $attribute
- * @param  Whitecube\NovaFlexibleContent\Layouts\Collection $layouts
+ * @param  Kraenkvisuell\NovaCmsBlocks\Layouts\Collection $layouts
  * @return Illuminate\Support\Collection
  */
 public function get($resource, $attribute, $layouts) {
@@ -419,7 +419,7 @@ public function get($resource, $attribute, $layouts) {
 
 ### Filling the field
 
-The `set` method is responsible for saving the Flexible's content somewhere the `get` method will be able to access it. In our example, it should store the data in a `blocks` table:
+The `set` method is responsible for saving the Blocks's content somewhere the `get` method will be able to access it. In our example, it should store the data in a `blocks` table:
 
 ```php
 /**
@@ -454,8 +454,8 @@ public function set($model, $attribute, $groups)
 By popular demand, we have added compatibility with the advanced-nova-media-library field.
 This requires a few extra steps, as follows:
 
-1. You must use a [custom layout class](https://whitecube.github.io/nova-flexible-content/#/?id=custom-layout-classes).
-2. Your custom layout class must implement `Spatie\MediaLibrary\HasMedia` and use the `Whitecube\NovaFlexibleContent\Concerns\HasMediaLibrary` trait.
+1. You must use a [custom layout class](https://kraenkvisuell.github.io/nova-cms-blocks/#/?id=custom-layout-classes).
+2. Your custom layout class must implement `Spatie\MediaLibrary\HasMedia` and use the `Kraenkvisuell\NovaCmsBlocks\Concerns\HasMediaLibrary` trait.
 3. The parent model must implement `Spatie\MediaLibrary\HasMedia` and use the `Spatie\MediaLibrary\InteractsWithMedia` trait.
 
 Quick example, consider `Post` has a flexible field with a `SliderLayout`:
@@ -464,20 +464,20 @@ Quick example, consider `Post` has a flexible field with a `SliderLayout`:
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Whitecube\NovaFlexibleContent\Concerns\HasFlexible;
+use Kraenkvisuell\NovaCmsBlocks\Concerns\HasBlocks;
 
 class Post extends Model implements HasMedia
 {
-    use HasFlexible;
+    use HasBlocks;
     use InteractsWithMedia;
 }
 ```
 
 ```php
 use Spatie\MediaLibrary\HasMedia;
-use Whitecube\NovaFlexibleContent\Layouts\Layout;
+use Kraenkvisuell\NovaCmsBlocks\Layouts\Layout;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
-use Whitecube\NovaFlexibleContent\Concerns\HasMediaLibrary;
+use Kraenkvisuell\NovaCmsBlocks\Concerns\HasMediaLibrary;
 
 class SliderLayout extends Layout implements HasMedia
 {
@@ -506,6 +506,6 @@ Thanks!
 
 
 ## Made with ❤️ for open source
-At [Whitecube](https://www.whitecube.be) we use a lot of open source software as part of our daily work.
+At [Kraenkvisuell](https://www.kraenkvisuell.be) we use a lot of open source software as part of our daily work.
 So when we have an opportunity to give something back, we're super excited!
-We hope you will enjoy this small contribution from us and would love to [hear from you](mailto:hello@whitecube.be) if you find it useful in your projects.
+We hope you will enjoy this small contribution from us and would love to [hear from you](mailto:hello@kraenkvisuell.be) if you find it useful in your projects.

@@ -1,6 +1,6 @@
 <?php
 
-namespace Whitecube\NovaFlexibleContent\Commands;
+namespace Kraenkvisuell\NovaCmsBlocks\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
@@ -26,7 +26,7 @@ class CreateLayout extends Command
      *
      * @var string
      */
-    protected $description = 'Generate a new Flexible Content Field Layout';
+    protected $description = 'Generate a new Blocks Content Field Layout';
 
     /**
      * The layout's classname
@@ -106,7 +106,7 @@ class CreateLayout extends Command
     protected function getPath()
     {
         return $this->makeDirectory(
-            app_path('Nova/Flexible/Layouts/' . $this->classname . '.php')
+            app_path('Nova/Blocks/Layouts/' . $this->classname . '.php')
         );
     }
 

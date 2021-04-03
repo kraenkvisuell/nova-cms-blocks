@@ -1,6 +1,6 @@
 <?php
 
-namespace Whitecube\NovaFlexibleContent\Commands;
+namespace Kraenkvisuell\NovaCmsBlocks\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
@@ -26,7 +26,7 @@ class CreateCast extends Command
      *
      * @var string
      */
-    protected $description = 'Generate a new Flexible Content cast class';
+    protected $description = 'Generate a new Blocks Content cast class';
 
     /**
      * The layout's classname

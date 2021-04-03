@@ -1,18 +1,18 @@
 <?php
 
-namespace Whitecube\NovaFlexibleContent\Concerns;
+namespace Kraenkvisuell\NovaCmsBlocks\Concerns;
 
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\MediaRepository;
-use Whitecube\NovaFlexibleContent\FileAdder\FileAdder;
-use Whitecube\NovaFlexibleContent\FileAdder\FileAdderFactory;
-use Whitecube\NovaFlexibleContent\Flexible;
+use Kraenkvisuell\NovaCmsBlocks\FileAdder\FileAdder;
+use Kraenkvisuell\NovaCmsBlocks\FileAdder\FileAdderFactory;
+use Kraenkvisuell\NovaCmsBlocks\Blocks;
 use Spatie\MediaLibrary\HasMedia;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
 use Illuminate\Support\Collection;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Media;
-use Whitecube\NovaFlexibleContent\Http\ScopedRequest;
+use Kraenkvisuell\NovaCmsBlocks\Http\ScopedRequest;
 
 trait HasMediaLibrary {
 
@@ -25,7 +25,7 @@ trait HasMediaLibrary {
      */
     protected function getMediaModel() : HasMedia
     {
-        $model = Flexible::getOriginModel() ?? $this->model;
+        $model = Blocks::getOriginModel() ?? $this->model;
 
         while ($model instanceof Layout) {
           $model = $model->getMediaModel();
@@ -99,12 +99,12 @@ trait HasMediaLibrary {
      * The default behaviour when removed
      * Should remove all related medias except if shouldDeletePreservingMedia returns true
      *
-     * @param  Flexible $flexible
-     * @param  Whitecube\NovaFlexibleContent\Layout $layout
+     * @param  Blocks $flexible
+     * @param  Kraenkvisuell\NovaCmsBlocks\Layout $layout
      *
      * @return mixed
      */
-    protected function removeCallback(Flexible $flexible, $layout)
+    protected function removeCallback(Blocks $flexible, $layout)
     {
       if ($this->shouldDeletePreservingMedia()) return;
   

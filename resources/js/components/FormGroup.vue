@@ -146,7 +146,7 @@ export default {
 
             let addon = '';
             _.forEach(this.group.fields, function(field) {
-                if (field.attribute == titleKey || _.endsWith(field.attribute, '__'+titleKey)) {
+                if ((field.attribute == titleKey || _.endsWith(field.attribute, '__'+titleKey)) && field.value) {
                     addon = ': <strong>'+field.value+'</strong>';
                 }
             });

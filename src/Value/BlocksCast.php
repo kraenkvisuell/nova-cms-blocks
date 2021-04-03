@@ -1,13 +1,13 @@
 <?php
 
-namespace Whitecube\NovaFlexibleContent\Value;
+namespace Kraenkvisuell\NovaCmsBlocks\Value;
 
-use Whitecube\NovaFlexibleContent\Concerns\HasFlexible;
+use Kraenkvisuell\NovaCmsBlocks\Concerns\HasBlocks;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
-class FlexibleCast implements CastsAttributes
+class BlocksCast implements CastsAttributes
 {
-    use HasFlexible;
+    use HasBlocks;
 
     /**
      * @var array

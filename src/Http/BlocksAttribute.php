@@ -1,10 +1,10 @@
 <?php
 
-namespace Whitecube\NovaFlexibleContent\Http;
+namespace Kraenkvisuell\NovaCmsBlocks\Http;
 
 use Illuminate\Support\Arr;
 
-class FlexibleAttribute
+class BlocksAttribute
 {
     /**
      * The Register attribute
@@ -86,7 +86,7 @@ class FlexibleAttribute
      * @param  string $group
      * @param  mixed $key
      * @param  bool $upload
-     * @return \Whitecube\NovaFlexibleContent\Http\FlexibleAttribute
+     * @return \Kraenkvisuell\NovaCmsBlocks\Http\BlocksAttribute
      */
     public static function make($name, $group = null, $key = null, $upload = false)
     {
@@ -103,7 +103,7 @@ class FlexibleAttribute
      *
      * @return bool
      */
-    public function isFlexibleFieldsRegister()
+    public function isBlocksFieldsRegister()
     {
         return $this->name === static::REGISTER;
     }
@@ -114,7 +114,7 @@ class FlexibleAttribute
      * @param mixed $value
      * @return bool
      */
-    public function isFlexibleFile($value = null)
+    public function isBlocksFile($value = null)
     {
         if(!is_null($value) && !is_string($value)) {
             return false;
@@ -126,12 +126,12 @@ class FlexibleAttribute
     }
 
     /**
-     * Return a FlexibleAttribute instance matching the target upload field
+     * Return a BlocksAttribute instance matching the target upload field
      *
      * @param mixed $value
-     * @return \Whitecube\NovaFlexibleContent\Http\FlexibleAttribute
+     * @return \Kraenkvisuell\NovaCmsBlocks\Http\BlocksAttribute
      */
-    public function getFlexibleFileAttribute($value)
+    public function getBlocksFileAttribute($value)
     {
         return new static($value, $this->group);
     }
@@ -158,7 +158,7 @@ class FlexibleAttribute
         }
 
         $position = strpos($this->original, $this->groupPrefix());
-        $index = $this->isFlexibleFile() ? strlen(static::FILE_INDICATOR) : 0;
+        $index = $this->isBlocksFile() ? strlen(static::FILE_INDICATOR) : 0;
 
         return ($position === $index);
     }
@@ -244,7 +244,7 @@ class FlexibleAttribute
      * Return a new instance with appended key
      *
      * @param string $key
-     * @return \Whitecube\NovaFlexibleContent\Http\FlexibleAttribute
+     * @return \Kraenkvisuell\NovaCmsBlocks\Http\BlocksAttribute
      */
     public function nest($key)
     {
@@ -263,7 +263,7 @@ class FlexibleAttribute
      */
     protected function setUpload()
     {
-        $this->upload = $this->isFlexibleFile($this->original);
+        $this->upload = $this->isBlocksFile($this->original);
     }
 
     /**
@@ -334,7 +334,7 @@ class FlexibleAttribute
     {
         $name = trim($this->original);
 
-        if($this->isFlexibleFile()) {
+        if($this->isBlocksFile()) {
             $position = strpos($name, static::FILE_INDICATOR) + strlen(static::FILE_INDICATOR);
             $name = substr($name, $position);
         }

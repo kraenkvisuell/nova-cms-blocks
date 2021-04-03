@@ -1,6 +1,6 @@
 {
-    "name": "whitecube/nova-flexible-content",
-    "description": "Flexible Content & Repeater Fields for Laravel Nova.",
+    "name": "kraenkvisuell/nova-cms-blocks",
+    "description": "Blocks Content & Repeater Fields for Laravel Nova.",
     "license": "MIT",
     "keywords": [
         "laravel",
@@ -14,7 +14,7 @@
     "authors": [
         {
             "name": "Toon Van den Bos",
-            "email": "toon@whitecube.be"
+            "email": "toon@kraenkvisuell.be"
         }
     ],
     "require": {
@@ -22,13 +22,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Whitecube\\NovaFlexibleContent\\": "src/"
+            "Kraenkvisuell\\NovaCmsBlocks\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Whitecube\\NovaFlexibleContent\\FieldServiceProvider"
+                "Kraenkvisuell\\NovaCmsBlocks\\FieldServiceProvider"
             ]
         }
     },

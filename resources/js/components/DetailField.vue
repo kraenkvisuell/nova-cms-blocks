@@ -2,7 +2,7 @@
     <panel-item :field="field">
         <template slot="value">
             <div v-for="(group, index) in groups">
-                <detail-nova-flexible-content-group
+                <detail-nova-cms-blocks-group
                     :index="index"
                     :last="(index === groups.length - 1)"
                     :group="group"

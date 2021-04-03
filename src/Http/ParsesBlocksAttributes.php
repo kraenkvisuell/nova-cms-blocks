@@ -1,11 +1,11 @@
 <?php
 
-namespace Whitecube\NovaFlexibleContent\Http;
+namespace Kraenkvisuell\NovaCmsBlocks\Http;
 
 use Illuminate\Http\Request;
-use Whitecube\NovaFlexibleContent\Http\FlexibleAttribute;
+use Kraenkvisuell\NovaCmsBlocks\Http\BlocksAttribute;
 
-trait ParsesFlexibleAttributes
+trait ParsesBlocksAttributes
 {
     /**
      * The registered flexible field attributes
@@ -20,10 +20,10 @@ trait ParsesFlexibleAttributes
      * @param  \Illuminate\Http\Request  $request
      * @return bool
      */
-    protected function requestHasParsableFlexibleInputs(Request $request)
+    protected function requestHasParsableBlocksInputs(Request $request)
     {
         return (in_array($request->method(), ['POST','PUT']) &&
-                is_string($request->input(FlexibleAttribute::REGISTER)));
+                is_string($request->input(BlocksAttribute::REGISTER)));
     }
 
     /**
@@ -32,16 +32,16 @@ trait ParsesFlexibleAttributes
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    protected function getParsedFlexibleInputs(Request $request)
+    protected function getParsedBlocksInputs(Request $request)
     {
-        $this->registerFlexibleFields($request->input(FlexibleAttribute::REGISTER));
+        $this->registerBlocksFields($request->input(BlocksAttribute::REGISTER));
 
         return array_reduce(array_keys($request->all()), function($carry, $attribute) use ($request) {
             $value = $request->input($attribute);
 
-            if(!$this->isFlexibleAttribute($attribute, $value)) return $carry;
+            if(!$this->isBlocksAttribute($attribute, $value)) return $carry;
 
-            $carry[$attribute] = $this->getParsedFlexibleValue($value);
+            $carry[$attribute] = $this->getParsedBlocksValue($value);
 
             return $carry;
         }, []);
@@ -53,7 +53,7 @@ trait ParsesFlexibleAttributes
      * @param  mixed $value
      * @return array
      */
-    protected function getParsedFlexibleValue($value)
+    protected function getParsedBlocksValue($value)
     {
         if(is_string($value)) {
             $raw = json_decode($value, true);
@@ -64,7 +64,7 @@ trait ParsesFlexibleAttributes
         if(!is_array($raw)) return $value;
 
         return array_map(function($group) {
-            return $this->getParsedFlexibleGroup($group);
+            return $this->getParsedBlocksGroup($group);
         }, $raw);
     }
 
@@ -74,7 +74,7 @@ trait ParsesFlexibleAttributes
      * @param  array $group
      * @return array
      */
-    protected function getParsedFlexibleGroup($group)
+    protected function getParsedBlocksGroup($group)
     {
         $clean = [
             'layout' => $group['layout'] ?? null,
@@ -83,12 +83,12 @@ trait ParsesFlexibleAttributes
         ];
 
         foreach ($group['attributes'] ?? [] as $attribute => $value) {
-            $this->fillFlexibleAttributes($clean['attributes'], $clean['key'], $attribute, $value);
+            $this->fillBlocksAttributes($clean['attributes'], $clean['key'], $attribute, $value);
         }
 
         foreach ($clean['attributes'] as $attribute => $value) {
-            if(!$this->isFlexibleAttribute($attribute, $value)) continue;
-            $clean['attributes'][$attribute] = $this->getParsedFlexibleValue($value);
+            if(!$this->isBlocksAttribute($attribute, $value)) continue;
+            $clean['attributes'][$attribute] = $this->getParsedBlocksValue($value);
         }
 
         return $clean;
@@ -103,12 +103,12 @@ trait ParsesFlexibleAttributes
      * @param  string $value
      * @return void
      */
-    protected function fillFlexibleAttributes(&$attributes, $group, $attribute, $value)
+    protected function fillBlocksAttributes(&$attributes, $group, $attribute, $value)
     {
         $attribute = $this->parseAttribute($attribute, $group);
 
-        if($attribute->isFlexibleFieldsRegister()) {
-            $this->registerFlexibleFields($value, $group);
+        if($attribute->isBlocksFieldsRegister()) {
+            $this->registerBlocksFields($value, $group);
             return;
         }
 
@@ -120,11 +120,11 @@ trait ParsesFlexibleAttributes
      *
      * @param  string  $attribute
      * @param  string  $group
-     * @return \Whitecube\NovaFlexibleContent\Http\FlexibleAttribute
+     * @return \Kraenkvisuell\NovaCmsBlocks\Http\BlocksAttribute
      */
     protected function parseAttribute($attribute, $group)
     {
-        return new FlexibleAttribute($attribute, $group);
+        return new BlocksAttribute($attribute, $group);
     }
 
     /**
@@ -134,7 +134,7 @@ trait ParsesFlexibleAttributes
      * @param  null|string $group
      * @return void
      */
-    protected function registerFlexibleFields($value, $group = null)
+    protected function registerBlocksFields($value, $group = null)
     {
         if(!$value) {
             return;
@@ -145,7 +145,7 @@ trait ParsesFlexibleAttributes
         }
 
         foreach ($value as $attribute) {
-            $this->registerFlexibleField($attribute, $group);
+            $this->registerBlocksField($attribute, $group);
         }
     }
 
@@ -156,7 +156,7 @@ trait ParsesFlexibleAttributes
      * @param  null|string $group
      * @return void
      */
-    protected function registerFlexibleField($attribute, $group = null)
+    protected function registerBlocksField($attribute, $group = null)
     {
         $attribute = $this->parseAttribute(strval($attribute), $group);
 
@@ -171,9 +171,9 @@ trait ParsesFlexibleAttributes
      * @param  mixed $value
      * @return bool
      */
-    protected function isFlexibleAttribute($attribute, $value)
+    protected function isBlocksAttribute($attribute, $value)
     {
-        if(!$this->getFlexibleAttribute($attribute)) {
+        if(!$this->getBlocksAttribute($attribute)) {
             return false;
         }
         
@@ -188,9 +188,9 @@ trait ParsesFlexibleAttributes
      * Retrieve a registered flexible attribute
      *
      * @param  string $attribute
-     * @return \Whitecube\NovaFlexibleContent\Http\FlexibleAttribute
+     * @return \Kraenkvisuell\NovaCmsBlocks\Http\BlocksAttribute
      */
-    protected function getFlexibleAttribute($attribute)
+    protected function getBlocksAttribute($attribute)
     {
         foreach ($this->registered as $registered) {
             if($registered->name === $attribute) return $registered;

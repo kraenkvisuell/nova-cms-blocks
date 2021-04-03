@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Nova\Flexible\Presets;
+namespace App\Nova\Blocks\Presets;
 
-use Whitecube\NovaFlexibleContent\Flexible;
-use Whitecube\NovaFlexibleContent\Layouts\Preset;
+use Kraenkvisuell\NovaCmsBlocks\Blocks;
+use Kraenkvisuell\NovaCmsBlocks\Layouts\Preset;
 
 class :classname extends Preset
 {
@@ -12,9 +12,9 @@ class :classname extends Preset
      *
      * @return void
      */
-    public function handle(Flexible $field)
+    public function handle(Blocks $field)
     {
-        // You can call all available methods on the Flexible field.
+        // You can call all available methods on the Blocks field.
         // $field->addLayout(...)
         // $field->button(...)
         // $field->resolver(...)

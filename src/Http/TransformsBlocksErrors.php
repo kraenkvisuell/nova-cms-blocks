@@ -1,14 +1,14 @@
 <?php
 
-namespace Whitecube\NovaFlexibleContent\Http;
+namespace Kraenkvisuell\NovaCmsBlocks\Http;
 
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Str;
-use Whitecube\NovaFlexibleContent\Flexible;
+use Kraenkvisuell\NovaCmsBlocks\Blocks;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-trait TransformsFlexibleErrors
+trait TransformsBlocksErrors
 {
     /**
      * Checks whether the given response's flexible errors can and should be transformed
@@ -16,7 +16,7 @@ trait TransformsFlexibleErrors
      * @param \Symfony\Component\HttpFoundation\Response $response
      * @return bool
      */
-    protected function shouldTransformFlexibleErrors(Response $response)
+    protected function shouldTransformBlocksErrors(Response $response)
     {
         return  $response->getStatusCode() === Response::HTTP_UNPROCESSABLE_ENTITY
                 && is_a($response, JsonResponse::class);
@@ -28,7 +28,7 @@ trait TransformsFlexibleErrors
      * @param Response $response
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function transformFlexibleErrors(Response $response)
+    protected function transformBlocksErrors(Response $response)
     {
         $response->setData(
             $this->updateResponseErrors($response->original)
@@ -66,7 +66,7 @@ trait TransformsFlexibleErrors
         $parsed = [];
 
         foreach($errors as $key => $messages) {
-            $attribute = Flexible::getValidationKey($key);
+            $attribute = Blocks::getValidationKey($key);
 
             if(!$attribute) {
                 $parsed[$key] = $messages;
@@ -84,7 +84,7 @@ trait TransformsFlexibleErrors
      *
      * @param  array  $messages
      * @param  string $key
-     * @param  \Whitecube\NovaFlexibleContent\Http\FlexibleAttribute  $attribute
+     * @param  \Kraenkvisuell\NovaCmsBlocks\Http\BlocksAttribute  $attribute
      * @return array
      */
     protected function transformMessages($messages, $key, $attribute)

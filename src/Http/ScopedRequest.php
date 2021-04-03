@@ -1,6 +1,6 @@
 <?php
 
-namespace Whitecube\NovaFlexibleContent\Http;
+namespace Kraenkvisuell\NovaCmsBlocks\Http;
 
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -13,7 +13,7 @@ class ScopedRequest extends NovaRequest
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $from
      * @param  array  $attributes
      * @param  string  $group
-     * @return \Whitecube\NovaFlexibleContent\Http\ScopedRequest
+     * @return \Kraenkvisuell\NovaCmsBlocks\Http\ScopedRequest
      */
     public static function scopeFrom(NovaRequest $from, $attributes, $group)
     {
@@ -55,7 +55,7 @@ class ScopedRequest extends NovaRequest
         $files = [];
 
         foreach ($attributes as $attribute => $value) {
-            $attribute = FlexibleAttribute::make($attribute, $group, is_array($value));
+            $attribute = BlocksAttribute::make($attribute, $group, is_array($value));
 
             // Sub-objects could contain files that need to be kept
             if($attribute->isAggregate()) {
@@ -65,8 +65,8 @@ class ScopedRequest extends NovaRequest
             }
 
             // Register Files
-            if($attribute->isFlexibleFile($value)) {
-                $files[] = $attribute->getFlexibleFileAttribute($value);
+            if($attribute->isBlocksFile($value)) {
+                $files[] = $attribute->getBlocksFileAttribute($value);
                 continue;
             }
 
@@ -87,7 +87,7 @@ class ScopedRequest extends NovaRequest
     protected function getNestedFiles($iterable, $group = null)
     {
         $files = [];
-        $key = $this->isFlexibleStructure($iterable) ? $iterable['key'] : $group;
+        $key = $this->isBlocksStructure($iterable) ? $iterable['key'] : $group;
 
         foreach ($iterable as $original => $value) {
             if(is_array($value)) {
@@ -95,13 +95,13 @@ class ScopedRequest extends NovaRequest
                 continue;
             }
 
-            $attribute = FlexibleAttribute::make($original, $group);
+            $attribute = BlocksAttribute::make($original, $group);
 
-            if(!$attribute->isFlexibleFile($value)) {
+            if(!$attribute->isBlocksFile($value)) {
                 continue;
             }
 
-            $files[] = $attribute->getFlexibleFileAttribute($value);
+            $files[] = $attribute->getBlocksFileAttribute($value);
         }
 
         return $files;
@@ -142,12 +142,12 @@ class ScopedRequest extends NovaRequest
      *
      * @return array
      */
-    protected function getFlattenedFiles($iterable = null, FlexibleAttribute $original = null)
+    protected function getFlattenedFiles($iterable = null, BlocksAttribute $original = null)
     {
         $files = [];
 
         foreach ($iterable ?? $this->files->all() as $key => $value) {
-            $attribute = $original ? $original->nest($key) : FlexibleAttribute::make($key);
+            $attribute = $original ? $original->nest($key) : BlocksAttribute::make($key);
 
             if(!is_array($value)) {
                 $files[$attribute->original] = $value;
@@ -166,7 +166,7 @@ class ScopedRequest extends NovaRequest
      * @param  array  $iterable
      * @return bool
      */
-    protected function isFlexibleStructure($iterable)
+    protected function isBlocksStructure($iterable)
     {
         $keys = array_keys($iterable);
 

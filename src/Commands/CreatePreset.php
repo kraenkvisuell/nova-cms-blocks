@@ -1,6 +1,6 @@
 <?php
 
-namespace Whitecube\NovaFlexibleContent\Commands;
+namespace Kraenkvisuell\NovaCmsBlocks\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
@@ -26,7 +26,7 @@ class CreatePreset extends Command
      *
      * @var string
      */
-    protected $description = 'Generate a new Flexible Content Field configuration Preset';
+    protected $description = 'Generate a new Blocks Content Field configuration Preset';
 
     /**
      * The layout's classname
@@ -84,7 +84,7 @@ class CreatePreset extends Command
     protected function getPath()
     {
         return $this->makeDirectory(
-            app_path('Nova/Flexible/Presets/' . $this->classname . '.php')
+            app_path('Nova/Blocks/Presets/' . $this->classname . '.php')
         );
     }
 

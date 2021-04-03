@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Nova\Flexible\Layouts;
+namespace App\Nova\Blocks\Layouts;
 
-use Whitecube\NovaFlexibleContent\Layouts\Layout;
+use Kraenkvisuell\NovaCmsBlocks\Layouts\Layout;
 
 class :classname extends Layout
 {

@@ -2,9 +2,9 @@
 
 namespace App\Casts;
 
-use Whitecube\NovaFlexibleContent\Value\FlexibleCast;
+use Kraenkvisuell\NovaCmsBlocks\Value\BlocksCast;
 
-class :classname extends FlexibleCast
+class :classname extends BlocksCast
 {
     protected $layouts = [
         // Define your layout mappings

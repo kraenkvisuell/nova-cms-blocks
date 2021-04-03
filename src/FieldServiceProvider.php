@@ -1,15 +1,15 @@
 <?php
 
-namespace Whitecube\NovaFlexibleContent;
+namespace Kraenkvisuell\NovaCmsBlocks;
 
 use Laravel\Nova\Nova;
 use Laravel\Nova\Events\ServingNova;
 use Illuminate\Support\ServiceProvider;
-use Whitecube\NovaFlexibleContent\Commands\CreateCast;
-use Whitecube\NovaFlexibleContent\Commands\CreateLayout;
-use Whitecube\NovaFlexibleContent\Commands\CreatePreset;
-use Whitecube\NovaFlexibleContent\Commands\CreateResolver;
-use Whitecube\NovaFlexibleContent\Http\Middleware\InterceptFlexibleAttributes;
+use Kraenkvisuell\NovaCmsBlocks\Commands\CreateCast;
+use Kraenkvisuell\NovaCmsBlocks\Commands\CreateLayout;
+use Kraenkvisuell\NovaCmsBlocks\Commands\CreatePreset;
+use Kraenkvisuell\NovaCmsBlocks\Commands\CreateResolver;
+use Kraenkvisuell\NovaCmsBlocks\Http\Middleware\InterceptBlocksAttributes;
 
 class FieldServiceProvider extends ServiceProvider
 {
@@ -23,8 +23,8 @@ class FieldServiceProvider extends ServiceProvider
         $this->addMiddleware();
       
         Nova::serving(function (ServingNova $event) {
-            Nova::script('nova-flexible-content', __DIR__.'/../dist/js/field.js');
-            Nova::style('nova-flexible-content', __DIR__.'/../dist/css/field.css');
+            Nova::script('nova-cms-blocks', __DIR__.'/../dist/js/field.js');
+            Nova::style('nova-cms-blocks', __DIR__.'/../dist/css/field.css');
         });
     }
 
@@ -55,7 +55,7 @@ class FieldServiceProvider extends ServiceProvider
         $router = $this->app['router'];
         
         if ($router->hasMiddlewareGroup('nova')) {
-            $router->pushMiddlewareToGroup('nova', InterceptFlexibleAttributes::class);
+            $router->pushMiddlewareToGroup('nova', InterceptBlocksAttributes::class);
             
             return;
         }
@@ -63,7 +63,7 @@ class FieldServiceProvider extends ServiceProvider
         if (! $this->app->configurationIsCached()) {
             config()->set('nova.middleware', array_merge(
                 config('nova.middleware', []),
-                [InterceptFlexibleAttributes::class]
+                [InterceptBlocksAttributes::class]
             ));
         }
     }

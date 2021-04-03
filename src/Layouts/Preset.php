@@ -1,8 +1,8 @@
 <?php
 
-namespace Whitecube\NovaFlexibleContent\Layouts;
+namespace Kraenkvisuell\NovaCmsBlocks\Layouts;
 
-use Whitecube\NovaFlexibleContent\Flexible;
+use Kraenkvisuell\NovaCmsBlocks\Blocks;
 
 abstract class Preset
 {
@@ -11,6 +11,6 @@ abstract class Preset
      *
      * @return void
      */
-    abstract public function handle(Flexible $field);
+    abstract public function handle(Blocks $field);
 
 }
