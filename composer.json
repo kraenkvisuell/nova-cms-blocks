@@ -13,6 +13,10 @@
     ],
     "authors": [
         {
+            "name": "Toon Van den Bos",
+            "email": "toon@whitecube.be"
+        },
+        {
             "name": "Sebastian Hilger",
             "email": "hilger@kraenk.de"
         }
