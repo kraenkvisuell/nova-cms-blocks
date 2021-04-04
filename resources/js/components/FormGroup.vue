@@ -139,7 +139,7 @@ export default {
     computed: {
         titleAddon() {
             let titleKey = 'title';
-
+            
             if (typeof(this.field.useAsTitle) != 'undefined' && this.field.useAsTitle[this.group.name]) {
                 titleKey = this.field.useAsTitle[this.group.name];
             }
@@ -147,7 +147,16 @@ export default {
             let addon = '';
             _.forEach(this.group.fields, function(field) {
                 if ((field.attribute == titleKey || _.endsWith(field.attribute, '__'+titleKey)) && field.value) {
-                    addon = ': <strong>'+field.value+'</strong>';
+                    let addonStr = field.value;
+                    if(_.isObject(field.value)) {
+                        addonStr = '';
+                        if(field.value.title) {
+                            addonStr = field.value.title;
+                        }
+                    }
+
+                    addon = ': <strong>'+_.truncate(addonStr, {length: 25})+'</strong>';
+                    
                 }
             });
             
