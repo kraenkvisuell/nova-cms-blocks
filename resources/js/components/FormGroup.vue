@@ -144,19 +144,30 @@ export default {
                 titleKey = this.field.useAsTitle[this.group.name];
             }
 
+                
+
             let addon = '';
             _.forEach(this.group.fields, function(field) {
-                if ((field.attribute == titleKey || _.endsWith(field.attribute, '__'+titleKey)) && field.value) {
-                    let addonStr = field.value;
-                    if(_.isObject(field.value)) {
-                        addonStr = '';
+                
+                if ((field.attribute == titleKey || _.endsWith(field.attribute, '__'+titleKey))) {
+                    let addonStr = field.value ? field.value : '';
+
+                    if (field.component == 'translatable-field') {
+                        if(_.isObject(field.translatable.value)) {
+                            const locale = document.getElementsByTagName('html')[0].getAttribute('lang');
+                            addonStr = field.translatable.value[locale];
+                        }
+                    } else if(_.isObject(field.value)) {
                         if(field.value.title) {
                             addonStr = field.value.title;
                         }
                     }
 
-                    addon = ': <strong>'+_.truncate(addonStr, {length: 25})+'</strong>';
-                    
+                    if (addonStr) { 
+                        addonStr = addonStr.replace(/(<([^>]+)>)/gi, "");
+
+                        addon = ': <strong>'+_.truncate(addonStr, {length: 30})+'</strong>';
+                    }
                 }
             });
             
