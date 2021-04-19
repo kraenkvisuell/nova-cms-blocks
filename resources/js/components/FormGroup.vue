@@ -75,7 +75,7 @@
             </div>
             <div class="-mb-1 flex flex-col min-h-full w-full">
                 <div :class="titleStyle" v-if="group.title">
-                    <div class="leading-normal py-1 px-8"
+                    <div class="leading-normal py-1 px-8 border-l border-40"
                         :class="{'border-b border-40': !collapsed}">
                         <p class="text-80">
                         <span class="mr-4 font-semibold">#{{ index + 1 }}</span>
@@ -139,12 +139,17 @@ export default {
     computed: {
         titleAddon() {
             let titleKey = 'title';
-            
+            let usePreview = false;
+
             if (typeof(this.field.useAsTitle) != 'undefined' && this.field.useAsTitle[this.group.name]) {
                 titleKey = this.field.useAsTitle[this.group.name];
-            }
 
-                
+                if (typeof(titleKey) == 'object') {
+                    let obj = titleKey;
+                    usePreview = obj.usePreview;
+                    titleKey = obj.key;
+                }
+            }
 
             let addon = '';
             _.forEach(this.group.fields, function(field) {
@@ -158,15 +163,22 @@ export default {
                             addonStr = field.translatable.value[locale];
                         }
                     } else if(_.isObject(field.value)) {
-                        if(field.value.title) {
+                        if(usePreview && field.value.preview) {
+                            addonStr = '<img class="ml-4 mt-1 h-12 rounded w-auto" src="'+field.value.preview+'" />';
+                        }
+                        else if(field.value.title) {
                             addonStr = field.value.title;
                         }
                     }
 
                     if (addonStr) { 
-                        addonStr = addonStr.replace(/(<([^>]+)>)/gi, "");
+                        console.log(addonStr);
+                        if (!usePreview) {
+                            addonStr = addonStr.replace(/(<([^>]+)>)/gi, "");
+                            addonStr = '<strong>'+_.truncate(addonStr, {length: 30})+'</strong>';
+                        }
 
-                        addon = ': <strong>'+_.truncate(addonStr, {length: 30})+'</strong>';
+                        addon = ': '+addonStr;
                     }
                 }
             });

@@ -225,6 +225,7 @@ class Blocks extends Field
     public function useAsTitle(array $titles = [])
     {
         $this->withMeta(['useAsTitle' => $titles]);
+        
         return $this;
     }
 
