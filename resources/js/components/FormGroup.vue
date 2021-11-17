@@ -172,7 +172,6 @@ export default {
                     }
 
                     if (addonStr) { 
-                        console.log(addonStr);
                         if (!usePreview) {
                             addonStr = addonStr.replace(/(<([^>]+)>)/gi, "");
                             addonStr = '<strong>'+_.truncate(addonStr, {length: 30})+'</strong>';
