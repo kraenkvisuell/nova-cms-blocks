@@ -1,9 +1,8 @@
 <?php
-
 namespace Kraenkvisuell\NovaCmsBlocks\Value;
 
-use Kraenkvisuell\NovaCmsBlocks\Concerns\HasBlocks;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Kraenkvisuell\NovaCmsBlocks\Concerns\HasBlocks;
 
 class BlocksCast implements CastsAttributes
 {

@@ -1,15 +1,14 @@
 <?php
-
 namespace Kraenkvisuell\NovaCmsBlocks\Concerns;
 
-use Kraenkvisuell\NovaCmsBlocks\Layouts\Layout;
-use Kraenkvisuell\NovaCmsBlocks\Layouts\Collection;
 use Illuminate\Support\Collection as BaseCollection;
-use Laravel\Nova\NovaServiceProvider;
+use Kraenkvisuell\NovaCmsBlocks\Layouts\Collection;
+use Kraenkvisuell\NovaCmsBlocks\Layouts\Layout;
 use Kraenkvisuell\NovaCmsBlocks\Value\BlocksCast;
+use Laravel\Nova\NovaServiceProvider;
 
-trait HasBlocks {
-
+trait HasBlocks
+{
     /**
      * Parse a Blocks Content attribute
      *
@@ -33,9 +32,11 @@ trait HasBlocks {
      */
     public function cast($value, $layoutMapping = [])
     {
-        if(app()->getProvider(NovaServiceProvider::class) && !app()->environment('testing')) {
-            return $value;
-        }
+        // ray(app()->getProvider(NovaServiceProvider::class));
+
+        // if (app()->getProvider(NovaServiceProvider::class) && !app()->environment('testing')) {
+        //     return $value;
+        // }
 
         return $this->toBlocks($value ?: null, $layoutMapping);
     }
@@ -51,7 +52,7 @@ trait HasBlocks {
     {
         $flexible = $this->getBlocksArrayFromValue($value);
 
-        if(is_null($flexible)) {
+        if (is_null($flexible)) {
             return new Collection();
         }
 
@@ -68,16 +69,16 @@ trait HasBlocks {
      */
     protected function getBlocksArrayFromValue($value)
     {
-        if(is_string($value)) {
+        if (is_string($value)) {
             $value = json_decode($value);
             return is_array($value) ? $value : null;
         }
 
-        if(is_a($value, BaseCollection::class)) {
+        if (is_a($value, BaseCollection::class)) {
             return $value->toArray();
         }
 
-        if(is_array($value)) {
+        if (is_array($value)) {
             return $value;
         }
 
@@ -93,7 +94,7 @@ trait HasBlocks {
      */
     protected function getMappedBlocksLayouts(array $flexible, array $layoutMapping)
     {
-        return array_map(function($item) use ($layoutMapping) {
+        return array_map(function ($item) use ($layoutMapping) {
             return $this->getMappedLayout($item, $layoutMapping);
         }, $flexible);
     }
@@ -111,27 +112,25 @@ trait HasBlocks {
         $key = null;
         $attributes = [];
 
-        if(is_string($item)) {
+        if (is_string($item)) {
             $item = json_decode($item);
         }
 
-        if(is_array($item)) {
+        if (is_array($item)) {
             $name = $item['layout'] ?? null;
             $key = $item['key'] ?? null;
             $attributes = (array) $item['attributes'] ?? [];
-        }
-        elseif(is_a($item, \stdClass::class)) {
+        } elseif (is_a($item, \stdClass::class)) {
             $name = $item->layout ?? null;
             $key = $item->key ?? null;
             $attributes = (array) $item->attributes ?? [];
-        }
-        elseif(is_a($item, Layout::class)) {
+        } elseif (is_a($item, Layout::class)) {
             $name = $item->name();
             $key = $item->key();
             $attributes = $item->getAttributes();
         }
 
-        if(is_null($name)) {
+        if (is_null($name)) {
             return;
         }
 
@@ -163,5 +162,4 @@ trait HasBlocks {
 
         return $layout;
     }
-
 }
