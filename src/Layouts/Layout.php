@@ -435,6 +435,10 @@ class Layout implements LayoutInterface, JsonSerializable, ArrayAccess, Arrayabl
      */
     public function __get($key)
     {
+        if ($key == 'exists') {
+            return;
+        }
+        
         return $this->getAttribute($key);
     }
 
