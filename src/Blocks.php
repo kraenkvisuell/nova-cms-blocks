@@ -164,7 +164,7 @@ class Blocks extends Field
     public function addLayout(...$arguments)
     {
         $count = count($arguments);
-
+        
         if ($count === 3) {
             $this->registerLayout(new Layout($arguments[0], $arguments[1], $arguments[2]));
             return $this;
@@ -176,7 +176,7 @@ class Blocks extends Field
         }
 
         if ($count !== 1) {
-            throw new \Exception('Invalid "addLayout" method call. Expected 1 or 3 arguments, ' . $count . ' given.');
+            throw new \Exception('Invalid "addLayout" method call. Expected 1, 3 or 6 arguments, ' . $count . ' given.');
         }
 
         $layout = $arguments[0];

@@ -5,6 +5,7 @@ namespace Kraenkvisuell\NovaCmsBlocks\Layouts;
 use ArrayAccess;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Concerns\HasAttributes;
+use Illuminate\Database\Eloquent\Concerns\HasRelationships;
 use Illuminate\Database\Eloquent\Concerns\HidesAttributes;
 use Illuminate\Database\Eloquent\Model;
 use JsonSerializable;
@@ -19,6 +20,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 class Layout implements LayoutInterface, JsonSerializable, ArrayAccess, Arrayable
 {
     use HasAttributes;
+    use HasRelationships;
     use HidesAttributes;
     use HasBlocks;
 
